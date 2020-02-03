@@ -134,7 +134,26 @@ searchForm.addEventListener('submit', function (e) {
   }
 
   e.preventDefault();
-});
+}); // show message
+
+function showMessage(message, className) {
+  // create div
+  var div = document.createElement('div'); // add classes
+
+  div.className = "alert ".concat(className); // add text
+
+  div.appendChild(document.createTextNode(message)); // get parent
+
+  var searchContainer = document.getElementById('search-container'); // get search
+
+  var search = document.getElementById('search'); // insert message
+
+  searchContainer.insertBefore(div, search); // timeout alert
+
+  setTimeout(function () {
+    return document.querySelector('.alert').remove();
+  }, 3000);
+}
 },{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
