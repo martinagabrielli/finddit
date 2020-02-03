@@ -127,7 +127,12 @@ searchForm.addEventListener('submit', function (e) {
 
   var sortBy = document.querySelector('input[name="sortby"]:checked').value; // get limit
 
-  var searchLimit = document.getElementById('limit').value;
+  var searchLimit = document.getElementById('limit').value; // check input
+
+  if (searchTerm === '') {
+    showMessage('Please add a search term', 'alert-danger');
+  }
+
   e.preventDefault();
 });
 },{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {

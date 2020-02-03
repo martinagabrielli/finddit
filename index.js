@@ -10,6 +10,11 @@ searchForm.addEventListener('submit', e => {
     // get limit
     const searchLimit = document.getElementById('limit').value;
 
+    // check input
+    if (searchTerm === '') {
+        showMessage('Please add a search term', 'alert-danger');
+    }
+
     e.preventDefault();
 });
 
