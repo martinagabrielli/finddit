@@ -126,11 +126,13 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _default = {
   search: function search(searchTerm, searchLimit, sortBy) {
-    fetch("http://www.reddit.com/search.json?q=".concat(searchTerm)).then(function (res) {
+    return fetch("http://www.reddit.com/search.json?q=".concat(searchTerm, "&sort=").concat(sortBy, "&limit=").concat(searchLimit)).then(function (res) {
       return res.json();
     }).then(function (data) {
-      return console.log(data);
-    });
+      return data.data.children.map(function (data) {
+        return data.data;
+      });
+    }); // .catch(err => console.log(err));
   }
 };
 exports.default = _default;
@@ -159,7 +161,17 @@ searchForm.addEventListener('submit', function (e) {
 
   searchInput.value = ''; // search reddit
 
-  _redditapi.default.search(searchTerm, searchLimit, sortBy);
+  _redditapi.default.search(searchTerm, searchLimit, sortBy).then(function (results) {
+    var output = '<div class="card-columns">'; // loop through posts
+
+    results.forEach(function (post) {
+      // check for image
+      var image = post.preview ? post.preview.images[0].source.url : 'https://cdn.vox-cdn.com/thumbor/SfU1irp-V79tbpVNmeW1N6PwWpI=/0x0:640x427/1200x800/filters:focal(0x0:640x427)/cdn.vox-cdn.com/uploads/chorus_image/image/45970810/reddit_logo_640.0.jpg';
+      output += "\n            <div class=\"card\">\n            <img src=\"".concat(image, "\" class=\"card-img-top\" alt=\"...\">\n            <div class=\"card-body\">\n              <h5 class=\"card-title\">").concat(post.title, "</h5>\n              <p class=\"card-text\">").concat(truncateText(post.selftext, 100), "</p>\n              <a href=\"").concat(post.url, "\" target=\"_blank\" class=\"btn btn-primary\">Read More</a>\n              <hr>\n              <span class=\"badge badge-secondary\">Subreddit: ").concat(post.subreddit, "</span>\n              <span class=\"badge badge-dark\">Score: ").concat(post.score, "</span>\n            </div>\n          </div>\n            ");
+    });
+    output += '</div>';
+    document.getElementById('results').innerHTML = output;
+  });
 
   e.preventDefault();
 }); // show message
@@ -181,6 +193,13 @@ function showMessage(message, className) {
   setTimeout(function () {
     return document.querySelector('.alert').remove();
   }, 3000);
+} // truncate text
+
+
+function truncateText(text, limit) {
+  var shortened = text.indexOf(' ', limit);
+  if (shortened == -1) return text;
+  return text.substring(0, shortened);
 }
 },{"./redditapi":"redditapi.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
